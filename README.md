@@ -3,6 +3,7 @@
 **Literature-Assisted Dual-annotation and Documentation & Evidence-based Reasoning**
 
 A Python package for LLM-powered gene set annotation and literature validation, designed for computational biology workflows in cancer genomics and multi-omics research.
+You can install the package from PyPI: https://pypi.org/project/ladder-gsea/
 
 ---
 
