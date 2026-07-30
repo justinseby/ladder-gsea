@@ -9,15 +9,15 @@ You can install the package from PyPI: https://pypi.org/project/ladder-gsea/
 
 ## Overview
 
-LADDER annotates gene sets by running a **dual- LLM annotation** — one is using pathway enrichment results (GO, Reactome, KEGG via Enrichr), one using only the model's prior knowledge — then retrieves relevant PubMed literature and runs a second LLM call to **validate and adjudicate** between the two annotations. The result is a single confidence-scored, literature-supported pathway annotation per gene set.
+LADDER annotates gene sets by running a **dual- LLM annotation** — one is using pathway enrichment results (GO, Reactome, KEGG via Enrichr), one using only the model's prior knowledge — then retrieves relevant PubMed literature and runs a second LLM act as a judge call to **validate and adjudicate** between the two annotations. The result is a single confidence-scored, literature-supported pathway annotation per gene set.
 
 The pipeline has three stages:
 
 ```
-Gene set → [1] Dual Annotation (LLM + Enrichr)
-         → [2] PubMed Retrieval (abstracts + PMC full text)
-         → [3] Literature Validation (LLM)
-         → LADDERResult
+Gene set → [1] Dual Annotation (Direct LLM + Enrichment driven)
+         → [2] PubMed Retrieval
+         → [3] LLM as a judge Validation using the retrieved literature
+         → [4] Final LADDER Result
 ```
 
 ---
@@ -36,7 +36,7 @@ pip install ladder-gsea
 from ladder import LADDERAnnotator, LADDERConfig
 
 config = LADDERConfig(
-    llm_provider   = "openai",          # "openai" | "deepseek" | "anthropic"
+    llm_provider   = "deepseek",       
     llm_api_key    = "sk-...",
     pubmed_context = "Acute Myeloid Leukemia, AML",
     ncbi_email     = "you@gmail.com",
@@ -80,11 +80,11 @@ config = LADDERConfig(
     llm_provider   = "openai",                    # LLM backend
     llm_api_key    = "sk-...",                    # API key for chosen provider
     pubmed_context = "Acute Myeloid Leukemia, AML, leukemia",  # Disease/context terms
-    ncbi_email     = "you@institution.edu",       # Required by NCBI E-utilities policy
+    ncbi_email     = "xxx@institution.edu",      
 
     # Optional
-    llm_model      = "gpt-4o",                   # Defaults: gpt-4o / deepseek-chat / claude-sonnet-4-20250514
-    ncbi_api_key   = "...",                       # Free NCBI key — raises rate limit from 3 to 10 req/s
+    llm_model      = "deepseek-chat",             # Defaults: gpt-4o / deepseek-chat / claude-sonnet-4-20250514
+    ncbi_api_key   = "...",                       # Free NCBI key — raises rate limit
     max_papers     = 50,                          # Max PubMed papers per gene set
     max_tokens_ann = 4000,                        # Token budget for annotation call
     max_tokens_val = 8000,                        # Token budget for validation call
