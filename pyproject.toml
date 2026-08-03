@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# ── Package identity ──────────────────────────────────────────────────────────
+[project]
+name = "ladder-gsea"
+version = "0.1.1"
+description = "Literature-Assisted Dual-annotation and  Evidence-based Reasoning for gene set annotation"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+
+authors = [
+    { name = "Justin Seby", email = "justin.seby@ki.se" },
+]
+
+keywords = [
+    "bioinformatics",
+    "gene set annotation",
+    "pathway analysis",
+    "pubmed",
+    "llm",
+    "AML",
+    "cancer genomics",
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+# ── Core dependencies (always installed) ─────────────────────────────────────
+# Keep this list minimal — only what the three modules strictly need.
+dependencies = [
+    "requests>=2.28",
+    "pandas>=1.5",
+    "gseapy>=1.0",
+]
+
+# ── Optional dependency groups ────────────────────────────────────────────────
+# Users install what they actually need:
+#   pip install ladder-gsea[openai]
+#   pip install ladder-gsea[anthropic]
+#   pip install ladder-gsea[enrichment]
+#   pip install ladder-gsea[all]
+
+[project.optional-dependencies]
+openai     = ["openai>=1.0"]
+anthropic  = ["anthropic>=0.20"]
+enrichment = ["gseapy>=1.0"]
+dev        = ["pytest>=7.0", "pytest-cov", "build", "twine"]
+
+all = [
+    "openai>=1.0",
+    "anthropic>=0.20",
+    "gseapy>=1.0",
+]
+
+# ── Where to find the source ──────────────────────────────────────────────────
+[tool.hatch.build.targets.wheel]
+packages = ["src/ladder"]
+
+
+# ── Project links ─────────────────────────────────────────────────────────────
+[project.urls]
+Homepage   = "https://github.com/justinseby/ladder-gsea"
+Repository = "https://github.com/justinseby/ladder-gsea"
+Issues     = "https://github.com/justinseby/ladder-gsea/issues"
